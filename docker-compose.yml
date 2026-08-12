@@ -1,7 +1,7 @@
 services:
   dnsmasq:
     container_name: dnsmasq
-    image: ghcr.io/YOUR_GITHUB_USER/sovik-dnsmasq:latest
+    image: ghcr.io/wh0else/dnsmasq:latest
     network_mode: host
     environment:
       TZ: 'Europe/Oslo'
@@ -13,8 +13,6 @@ services:
       - NET_ADMIN
       - NET_RAW
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
 networks:
   inet6:
