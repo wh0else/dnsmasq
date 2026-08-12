@@ -1,0 +1,26 @@
+services:
+  dnsmasq:
+    container_name: dnsmasq
+    image: ghcr.io/YOUR_GITHUB_USER/sovik-dnsmasq:latest
+    network_mode: host
+    environment:
+      TZ: 'Europe/Oslo'
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+      - ./dnsmasq.d-etc/:/etc/dnsmasq.d
+      - /usr/local/share/ca-certificates/sovik-root-ca.crt:/etc/ssl/certs/753f4e20.0:ro
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+networks:
+  inet6:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: "2001:67c:228c:100::/64"
