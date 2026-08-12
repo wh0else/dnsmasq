@@ -50,7 +50,7 @@ jobs:
       - name: Determine dnsmasq version
         id: version
         run: |
-          RAW=$(docker run --rm ${{ env.IMAGE_NAME }}:build dnsmasq --version | head -n1)
+          RAW=$(docker run --rm --entrypoint dnsmasq ${{ env.IMAGE_NAME }}:build --version | head -n1)
           VERSION=$(echo "$RAW" | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -n1)
           echo "Detected: $RAW -> v$VERSION"
           echo "version=v${VERSION}" >> "$GITHUB_OUTPUT"
