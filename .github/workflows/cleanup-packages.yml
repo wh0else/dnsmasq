@@ -1,0 +1,31 @@
+name: Clean up old dnsmasq images
+
+on:
+  # run after every build so the registry never grows past the limit
+  workflow_run:
+    workflows: ["Build & push dnsmasq image"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Only log what would be deleted"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all but the 10 newest images
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          package: dnsmasq
+          keep-n-tagged: 10
+          delete-untagged: true
+          delete-ghost-images: true
+          delete-partial-images: true
+          dry-run: ${{ inputs.dry-run || false }}
